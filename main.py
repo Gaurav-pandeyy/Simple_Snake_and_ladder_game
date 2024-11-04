@@ -8,7 +8,6 @@ class Player:
 
     def move(self, steps):
         self.position += steps
-        # Check for the winning condition
         if self.position > 100:
             self.position = 100  # Stay at 100 if the player overshoots
         return self.position
@@ -16,6 +15,29 @@ class Player:
 
 def roll_dice():
     return random.randint(1, 6)
+
+
+def print_board(players):
+    """Print the game board with player positions."""
+    board = [' ' for _ in range(101)]  # Create an empty board of size 101 (0-100)
+
+    # Mark player positions on the board
+    for player in players:
+        if player.position <= 100:  # Only show players who are on the board
+            board[player.position] = player.name[0]  # Use first letter of player's name
+
+    # Print the board
+    print("\nBoard: ")
+    for i in range(10, 0, -1):  # Print the board in rows
+        row = ''
+        for j in range(10):
+            cell = (i - 1) * 10 + j
+            if cell <= 100:
+                row += f"[{board[cell]}]"  # Player markers
+            else:
+                row += "[ ]"  # Empty space
+        print(row)
+    print()
 
 
 def main():
@@ -69,6 +91,9 @@ def main():
                 new_position]  # Update position according to snakes and ladders
 
         print(f"{current_player.name} is now on square {current_player.position}.")
+
+        # Print the board after each turn
+        print_board(players)
 
         # Check if the current player has won
         if current_player.position == 100:
